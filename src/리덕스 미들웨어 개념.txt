@@ -1,0 +1,34 @@
+리덕스 미들웨어 개념
+비동기작업 => api 요청
+이것은 리덕스에서 할 수 없음 리덕스는 동기적으로 작업하기 떄문
+이것을 해결하기 위한게 리덕스 미들웨어임
+원조:
+ui -> dispatch -> action -> (reducer=>store=>state) -> ui ..원래는 이런구조 
+리덕스 미들웨어임:
+ui -> dispatch -> action -> (middleware=>dispatch(action)=>reducer=>store=>state) -> ui 
+
+원래는 reducer로 바로 가는게 맞지만 미들웨어는 middleware에 거쳐서 reducer로 이동한다.
+middleware에서는 함수를 만들 수 있는데 이 함수(async)에서 비동기 처리를 가능하게 한다.
+
+redux middleware에는 두가지 종류가 있다.
+1. redux-saga 
+
+2. redux-thunk : 
+
+미들웨어는 해당 기능 마다 action 파일과 reducer파일로 각각 저장되어야함
+얘를들어 async인 로그인과 api를 가져오는 작업에서 
+로그인 파일 action, redcuer와
+api 파일 action, reducer 파일을 구분해서 저장해야 가독성이 좋고 파일 관리가 용이하다.
+이렇게 reducer를 설정했으면 store에도 해당 파일 reducer을 집어 넣어줘야 store에서 가져올 수 있다
+이거 조심해자 그래서 이 reducer 파일을 한개로 합쳐줘야 함 그 합친 파일을 store에 넣어줘야함
+
+index.js파일을 만들고 combinReducers을 이용하면 됨
+------------------------------------------------------------------------------------
+redux devtool 사용해보자
+state가 바뀌는 것을 실시간으로 확인하고 싶다 내가 action을 던졌는데 state가 잘 바뀌었는지 확인하고 싶다
+console.log하기 귀찮잖아 그때 redux devTools 사용
+
+-------------------------------------------------
+createAsyncTunk는 원래 api data를 가져올 때 
+오류 페이지, 잘 가져온 페이지, 로딩 페이지 다 각각 만들어줘야 하는
+귀찮음이 있는데 그 모든 내용들이 createAsyncTunk를 통해 처리가능함
